@@ -20,6 +20,7 @@ window.client = {
     config: config,
     fs: fs
 }
+window.prompt = (message, defaultValue) => ipcRenderer.sendSync('prompt', message, defaultValue)
 class Utilities {
     constructor() {
         this.downKeys = new Set();

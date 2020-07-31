@@ -52,6 +52,7 @@ let locationType = (url = '') => {
 }
 
 let createSplashWindow = () => {
+
 	let win = new BrowserWindow({
 		width: 600,
 		height: 300,
@@ -61,20 +62,22 @@ let createSplashWindow = () => {
 		frame: false,
 		transparent: true,
 		webPreferences: {
-			preload: path.join(process.cwd(), 'app', 'js', 'splash.js')
+			preload: path.join(__dirname, 'splash.js')
 		}
 	})
-	//let contents = win.webContents
 	win.removeMenu()
 	win.loadFile(path.join(process.cwd(), 'app', 'html', 'splash.html'))
 	win.once('ready-to-show', () => {
 		win.show()
 	})
-	
+
+	let contents = win.webContents
+
 	return win
 }
 
 let createMainWindow = (url, webContents = null) => {
+	const isMac = process.platform == 'darwin'
 	const area = screen.getPrimaryDisplay().workArea;
 	let win = new BrowserWindow({
 		width: area.width * .90,
@@ -161,7 +164,6 @@ let createMainWindow = (url, webContents = null) => {
 		initSwappers();
 		win.loadURL(url)
 	}
-	let contents = win.webContents;
 	win.once('ready-to-show', () => {
 		if (splashWindow && !splashWindow.isDestroyed()) splashWindow.destroy();
 		if (locationType(contents.getURL()) == 'game') {
@@ -170,7 +172,7 @@ let createMainWindow = (url, webContents = null) => {
 		win.show()
 	})
 
-	let isMac = process.platform == 'darwin'
+	let contents = win.webContents
 
 	shortcut.register(win, 'F12', _ => {
 		contents.isDevToolsOpened() 

@@ -154,7 +154,7 @@ class Utilities {
                 max: 11,
                 step: 0.1,
                 html: () => this.generateSetting("slider", "autoAimOffset"),
-                set: value => this.autoAimOffset = parseFloat(value)
+                //set: value => this.autoAimOffset = parseFloat(value)
             },
             wallPenetrate: {
                 name: "Aim through Penetratables",
@@ -784,9 +784,9 @@ let nativeHooks = () => {
         }
     );
 
-    AudioParam.prototype.setTargetAtTime = (args) => {
+    AudioParam.prototype.setTargetAtTime = function(...args) {
         return 0;
-    };
+    }
 
     return new Promise((resolve, reject) => {
         /* resolve(respoce) or reject(error) */
@@ -904,7 +904,7 @@ let gameHooks = () => {
 
                 let camLookAt = function(entity) {
                     if (null === entity) return void(Controls.aimTarget = null);
-                    const xDire = getXDire(Controls.object.position.x, Controls.object.position.y, Controls.object.position.z, entity.pos.x, (entity.pos.y + settings.autoAimOffset.val) - (entity[crouchVal] * serverVars.crouchDst), entity.pos.z);
+                    const xDire = getXDire(Controls.object.position.x, Controls.object.position.y, Controls.object.position.z, entity.pos.x, (entity.pos.y + parseFloat(settings.autoAimOffset.val)) - (entity[crouchVal] * serverVars.crouchDst), entity.pos.z);
                     const yDire = getDir(Controls.object.position.z, Controls.object.position.x, entity.pos.z, entity.pos.x);
                     Controls.aimTarget = {
                         xD: xDire,
